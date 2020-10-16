@@ -8,9 +8,12 @@
 
 </head>
 <body>
+    <div id="losdivos"></div>
     <script>
         gyro.startTracking(function(o) {
             console.log(o)
+            var fieldNameElement = document.getElementById('losdivos');
+            fieldNameElement.innerHTML = `${o.x} ${o.y} ${o.z}`
         });
     </script>
     
