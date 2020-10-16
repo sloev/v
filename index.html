@@ -10,6 +10,7 @@
 <body>
     <div id="losdivos"></div>
     <script>
+        gyro.frequency = 10
         gyro.startTracking(function(o) {
             console.log(o)
             var fieldNameElement = document.getElementById('losdivos');
