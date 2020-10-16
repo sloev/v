@@ -10,36 +10,15 @@
     <div id="losdivos"></div>
     <script>
        
-        document.addEventListener("deviceready", onDeviceReady, false);
+       let acl = new Accelerometer({frequency: 60});
 
-// device APIs are available
-//
-function onDeviceReady() {
-    startWatch();   
-}
+acl.addEventListener('reading', () => {
+ 
+  var fieldNameElement = document.getElementById('losdivos');
+            fieldNameElement.innerHTML = `${acl.x} ${acl.y} ${acl.z}`
+});
 
-// Start watching the acceleration
-//
-function startWatch() {
-
-    // Update acceleration every 0.01 seconds
-    var options = { frequency: 5 };
-
-    watchID = navigator.accelerometer.watchAcceleration(onSuccess, null, options);
-
-}
-
-
-// onSuccess: Get a snapshot of the current acceleration
-//
-function onSuccess(acceleration) {
-    var element = document.getElementById('accelerometer');
-var x = acceleration.x
-var y = acceleration.y
-var z = acceleration.z
-var fieldNameElement = document.getElementById('losdivos');
-            fieldNameElement.innerHTML = `${x} ${y} ${z}`
-}
+acl.start();
     </script>
     
 </body>
