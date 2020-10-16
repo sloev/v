@@ -4,18 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="/v/gyro.js"></script>
 
 </head>
 <body>
     <div id="losdivos"></div>
     <script>
-        gyro.frequency = 10
-        gyro.startTracking(function(o) {
-            console.log(o)
-            var fieldNameElement = document.getElementById('losdivos');
-            fieldNameElement.innerHTML = `${o.x} ${o.y} ${o.z}`
-        });
+       
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+// device APIs are available
+//
+function onDeviceReady() {
+    startWatch();   
+}
+
+// Start watching the acceleration
+//
+function startWatch() {
+
+    // Update acceleration every 0.01 seconds
+    var options = { frequency: 5 };
+
+    watchID = navigator.accelerometer.watchAcceleration(onSuccess, null, options);
+
+}
+
+
+// onSuccess: Get a snapshot of the current acceleration
+//
+function onSuccess(acceleration) {
+    var element = document.getElementById('accelerometer');
+var x = acceleration.x
+var y = acceleration.y
+var z = acceleration.z
+var fieldNameElement = document.getElementById('losdivos');
+            fieldNameElement.innerHTML = `${x} ${y} ${z}`
+}
     </script>
     
 </body>
