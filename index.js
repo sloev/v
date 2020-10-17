@@ -35,7 +35,7 @@ function processMessages(messages) {
 
 function main() {
     if (state == stateEnum.idle){
-        if (messages) {
+        if (messages.length>0) {
             state = stateEnum.playing;
             processMessages(messages)
             messages = []
