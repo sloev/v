@@ -1,25 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-
-</head>
-<body>
+    <script src="/v/index.js" />
+  </head>
+  <body>
     <div id="losdivos"></div>
-    <script>
-       
-       let acl = new Accelerometer({frequency: 60});
-
-acl.addEventListener('reading', () => {
- 
-  var fieldNameElement = document.getElementById('losdivos');
-            fieldNameElement.innerHTML = `${acl.x} ${acl.y} ${acl.z}`
-});
-
-acl.start();
-    </script>
-    
-</body>
+  </body>
 </html>
