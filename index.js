@@ -11,38 +11,41 @@ const refreshMs = 30;
 let acl = new Accelerometer({ frequency: refreshMs });
 
 acl.addEventListener("reading", () => {
+    var fieldNameElement = document.getElementById("losdivos");
 
-  let summed = ((acl.x + acl.y + acl.z) / 3.0);
+  let summed = (acl.x + acl.y + acl.z) / 3.0;
 
   buffer.push(summed);
 
   let z_smoothed = smoothed_z_score(buffer, null);
-  if (z_smoothed.length > 100 && z_smoothed.slice(z_smoothed.length-80).every(item => item === 0)){
-    acl.stop()
-    messages.push(z_smoothed.map(x => x * refreshMs));
+  if (
+    z_smoothed.length > 100 &&
+    z_smoothed.slice(z_smoothed.length - 80).every((item) => item === 0)
+  ) {
+    acl.stop();
+    messages.push(z_smoothed.map((x) => x * refreshMs));
     state = stateEnum.idle;
     setTimeout(main, 10);
-    return
+    return;
   }
   if (buffer.length > 2000) {
     acl.stop();
     state = stateEnum.idle;
     setTimeout(main, 10);
-    return
+    return;
   } else {
     fieldNameElement.innerHTML = `${buffer.length}`;
   }
 });
 
 function processMessages(messages) {
-var fieldNameElement = document.getElementById("losdivos");
+  var fieldNameElement = document.getElementById("losdivos");
 
-  let buffer = messages.pop()
+  let buffer = messages.pop();
   var i;
-  let text = ""
+  let text = "";
   for (i = 0; i < buffer.length; i++) {
-
-      text += `${buffer[i]} <br>`;
+    text += `${buffer[i]} <br>`;
   }
   fieldNameElement.innerHTML = text;
   state = stateEnum.idle;
