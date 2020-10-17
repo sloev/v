@@ -7,7 +7,7 @@ let state = stateEnum.idle;
 
 let messages = [];
 let buffer = [];
-const refreshMs = 20;
+const refreshMs = 100;
 let acl = new Accelerometer({ frequency: refreshMs });
 
 function check_acc() {
@@ -15,15 +15,15 @@ function check_acc() {
 
   let summed = (acl.x + acl.y + acl.z) / 3.0;
 
-  buffer.push(summed>2.5);
+  buffer.push(summed);
 
-  //let z_smoothed = smoothed_z_score(buffer, null);
+  let z_smoothed = smoothed_z_score(buffer, null);
   if (
-    buffer.length > 30 &&
-    buffer.slice(buffer.length - 30).every((item) => item === 0)
+    z_smoothed.length > 15 &&
+    z_smoothed.slice(z_smoothed.length - 15).every((item) => item === 0)
   ) {
     acl.stop();
-    messages.push(buffer);
+    messages.push(z_smoothed);
     state = stateEnum.idle;
     setTimeout(main, 10);
     return;
@@ -47,19 +47,21 @@ function processMessages(messages) {
   var i;
   let last_value = 0;
   let last_index = 0
+  let total = 0
   for (i = 1; i < buffer.length; i++) {
       const val = Math.abs(buffer[i])
       if (val != last_value){
           let periods = i - last_index;
           let multiplier = last_value ? 3:2
           vibration_buffer.push(periods * refreshMs * multiplier)
+          total += periods * refreshMs * multiplier
           last_index = i;      
       }
       last_value = val;
   }
   fieldNameElement.innerHTML = `${vibration_buffer}`;
 
-  setTimeout(stopVibration, (buffer.length * refreshMs) + 1000);
+  setTimeout(stopVibration, total + 1000);
 
   navigator.vibrate(vibration_buffer);
 
