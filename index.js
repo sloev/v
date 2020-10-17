@@ -23,7 +23,7 @@ acl.addEventListener("reading", () => {
     z_smoothed.slice(z_smoothed.length - 80).every((item) => item === 0)
   ) {
     acl.stop();
-    messages.push(z_smoothed.map((x) => x * refreshMs));
+    messages.push(z_smoothed);
     state = stateEnum.idle;
     setTimeout(main, 10);
     return;
@@ -42,15 +42,23 @@ function processMessages(messages) {
   var fieldNameElement = document.getElementById("losdivos");
 
   let buffer = messages.pop();
+  let vibration_buffer = [0]
   var i;
-  let text = "";
-  for (i = 0; i < buffer.length; i++) {
-    text += `${buffer[i]} <br>`;
+  let last_value = 0;
+  let last_index = 0
+  for (i = 1; i < buffer.length; i++) {
+      const val = Math.abs(buffer[i])
+      if (val != last_value){
+          let periods = i - last_index;
+          vibration_buffer.push(periods * refreshMs)
+      }
+      last_value = val;
+      last_index = i;      
   }
   fieldNameElement.innerHTML = text;
-  setTimeout(stopVibration, buffer.length * refreshMs);
+  setTimeout(stopVibration, (buffer.length * refreshMs) + 1000);
 
-  window.navigator.vibrate(buffer);
+  window.navigator.vibrate(vibration_buffer);
 
 
 }
