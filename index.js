@@ -7,10 +7,10 @@ let state = stateEnum.idle;
 
 let messages = [];
 let buffer = [];
-const refreshMs = 60;
+const refreshMs = 20;
 let acl = new Accelerometer({ frequency: refreshMs });
 
-acl.addEventListener("reading", () => {
+function check_acc() {
   var fieldNameElement = document.getElementById("losdivos");
 
   let summed = (acl.x + acl.y + acl.z) / 3.0;
@@ -28,7 +28,7 @@ acl.addEventListener("reading", () => {
     setTimeout(main, 10);
     return;
   }
-  if (buffer.length > 2000) {
+  if (buffer.length * refreshMs > 2000) {
     acl.stop();
     state = stateEnum.idle;
     setTimeout(main, 10);
@@ -36,9 +36,8 @@ acl.addEventListener("reading", () => {
   } else {
     fieldNameElement.innerHTML = `${buffer.length}`;
   }
-});
+};
 
-acl.stop()
 
 function processMessages(messages) {
   var fieldNameElement = document.getElementById("losdivos");
@@ -71,7 +70,10 @@ function stopVibration() {
     state = stateEnum.idle;
     setTimeout(main, 10);
 }
-
+function start() {
+    acl.addEventListener("reading", check_acc);
+    main()
+}
 function main() {
   var fieldNameElement = document.getElementById("losdivos");
   var indicator = document.getElementById('indicator');
