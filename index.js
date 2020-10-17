@@ -15,15 +15,15 @@ function check_acc() {
 
   let summed = (acl.x + acl.y + acl.z) / 3.0;
 
-  buffer.push(summed);
+  buffer.push(summed>2.5);
 
-  let z_smoothed = smoothed_z_score(buffer, null);
+  //let z_smoothed = smoothed_z_score(buffer, null);
   if (
-    z_smoothed.length > 30 &&
-    z_smoothed.slice(z_smoothed.length - 30).every((item) => item === 0)
+    buffer.length > 30 &&
+    buffer.slice(buffer.length - 30).every((item) => item === 0)
   ) {
     acl.stop();
-    messages.push(z_smoothed);
+    messages.push(buffer);
     state = stateEnum.idle;
     setTimeout(main, 10);
     return;
