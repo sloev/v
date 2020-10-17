@@ -48,16 +48,28 @@ function processMessages(messages) {
     text += `${buffer[i]} <br>`;
   }
   fieldNameElement.innerHTML = text;
-  state = stateEnum.idle;
-  setTimeout(main, 10);
+  setTimeout(stopVibration, buffer.length * refreshMs);
+
+  window.navigator.vibrate(buffer);
+
+
+}
+
+function stopVibration() {
+    navigator.vibrate(0);
+    state = stateEnum.idle;
+    setTimeout(main, 10);
 }
 
 function main() {
   var fieldNameElement = document.getElementById("losdivos");
+  var indicator = document.getElementById('indicator');
 
   if (state == stateEnum.idle) {
     if (messages.length > 0) {
       fieldNameElement.innerHTML = `playing`;
+      indicator.style['background-color'] = 'yellow';
+
 
       state = stateEnum.playing;
       processMessages(messages);
@@ -66,12 +78,16 @@ function main() {
     } else {
         buffer = [];
       fieldNameElement.innerHTML = `recording`;
+      indicator.style['background-color'] = 'red';
+
 
       state = stateEnum.recording;
       acl.start();
       return;
     }
   }
+  indicator.style['background-color'] = 'green';
+
   fieldNameElement.innerHTML = `idling`;
 }
 
