@@ -11,7 +11,7 @@ const refreshMs = 30;
 let acl = new Accelerometer({ frequency: refreshMs });
 
 acl.addEventListener("reading", () => {
-    var fieldNameElement = document.getElementById("losdivos");
+  var fieldNameElement = document.getElementById("losdivos");
 
   let summed = (acl.x + acl.y + acl.z) / 3.0;
 
@@ -64,6 +64,7 @@ function main() {
       messages = [];
       return;
     } else {
+        buffer = [];
       fieldNameElement.innerHTML = `recording`;
 
       state = stateEnum.recording;
