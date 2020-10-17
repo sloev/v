@@ -7,7 +7,7 @@ let state = stateEnum.idle;
 
 let messages = [];
 let buffer = [];
-const refreshMs = 10;
+const refreshMs = 60;
 let acl = new Accelerometer({ frequency: refreshMs });
 
 acl.addEventListener("reading", () => {
@@ -19,8 +19,8 @@ acl.addEventListener("reading", () => {
 
   let z_smoothed = smoothed_z_score(buffer, null);
   if (
-    z_smoothed.length > 100 &&
-    z_smoothed.slice(z_smoothed.length - 80).every((item) => item === 0)
+    z_smoothed.length > 20 &&
+    z_smoothed.slice(z_smoothed.length - 20).every((item) => item === 0)
   ) {
     acl.stop();
     messages.push(z_smoothed);
@@ -38,65 +38,70 @@ acl.addEventListener("reading", () => {
   }
 });
 
-acl.stop();
+acl.stop()
 
 function processMessages(messages) {
   var fieldNameElement = document.getElementById("losdivos");
 
   let buffer = messages.pop();
-  let vibration_buffer = [0];
+  let vibration_buffer = [0]
   var i;
   let last_value = 0;
-  let last_index = 0;
+  let last_index = 0
   for (i = 1; i < buffer.length; i++) {
-    const val = Math.abs(buffer[i]);
-    if (val != last_value) {
-      let periods = i - last_index;
-      vibration_buffer.push(periods * refreshMs);
-      last_index = i;
-    }
-    last_value = val;
+      const val = Math.abs(buffer[i])
+      if (val != last_value){
+          let periods = i - last_index;
+          vibration_buffer.push(periods * refreshMs)
+          last_index = i;      
+      }
+      last_value = val;
   }
   fieldNameElement.innerHTML = `${vibration_buffer}`;
 
-  setTimeout(stopVibration, buffer.length * refreshMs + 1000);
+  setTimeout(stopVibration, (buffer.length * refreshMs) + 1000);
 
   navigator.vibrate(vibration_buffer);
+
+
 }
 
 function stopVibration() {
-  navigator.vibrate(0);
-  state = stateEnum.idle;
-  setTimeout(main, 10);
+    navigator.vibrate(0);
+    state = stateEnum.idle;
+    setTimeout(main, 10);
 }
 
 function main() {
   var fieldNameElement = document.getElementById("losdivos");
-  var indicator = document.getElementById("indicator");
+  var indicator = document.getElementById('indicator');
 
   if (state == stateEnum.idle) {
     if (messages.length > 0) {
       fieldNameElement.innerHTML = `playing`;
-      indicator.style["background-color"] = "yellow";
+      indicator.style['background-color'] = 'yellow';
+
 
       state = stateEnum.playing;
       processMessages(messages);
       messages = [];
       return;
     } else {
-      buffer = [];
+        buffer = [];
       fieldNameElement.innerHTML = `recording`;
-      indicator.style["background-color"] = "red";
+      indicator.style['background-color'] = 'red';
+
 
       state = stateEnum.recording;
       acl.start();
       return;
     }
   }
-  indicator.style["background-color"] = "green";
+  indicator.style['background-color'] = 'green';
 
   fieldNameElement.innerHTML = `idling`;
 }
+
 
 // javascript port of: https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/48895639#48895639
 
