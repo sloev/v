@@ -43,11 +43,13 @@ function main() {
             state = stateEnum.playing;
             processMessages(messages)
             messages = []
+            return
         } else {
             fieldNameElement.innerHTML = `recording`;
 
             state = stateEnum.recording;
             acl.start();
+            return
         }
 
     }
