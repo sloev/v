@@ -100,7 +100,6 @@ function main() {
   fieldNameElement.innerHTML = `idling`;
 }
 
-setTimeout(main, 10);
 
 // javascript port of: https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/48895639#48895639
 
