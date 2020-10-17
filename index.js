@@ -12,11 +12,17 @@ let buffer = []
 let acl = new Accelerometer({ frequency: 30 });
 
 acl.addEventListener("reading", () => {
+    var fieldNameElement = document.getElementById("losdivos");
+
     let summed = (acl.x + acl.y + acl.z) /3.0 + 1
+
+    fieldNameElement.innerHTML = `got value ${summed}`;
+
     buffer.push(summed)
 
   let z_smoothed = smoothed_z_score(buffer, null)
-  var fieldNameElement = document.getElementById("losdivos");
+  fieldNameElement.innerHTML = `got smoothed`;
+
   if (buffer.length>200){
       acl.stop()
       fieldNameElement.innerHTML = `${summed}   |||||  ${z_smoothed}`;
