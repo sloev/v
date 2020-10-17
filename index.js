@@ -8,7 +8,7 @@ let state = stateEnum.idle;
 let messages = [];
 let buffer = [];
 const refreshMs = 100;
-let acl = new Accelerometer({ frequency: refreshMs });
+let acl = new Accelerometer({ frequency: 1000/refreshMs });
 
 function check_acc() {
   var fieldNameElement = document.getElementById("losdivos");
