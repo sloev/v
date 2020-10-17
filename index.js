@@ -53,9 +53,9 @@ function processMessages(messages) {
       if (val != last_value){
           let periods = i - last_index;
           vibration_buffer.push(periods * refreshMs)
+          last_index = i;      
       }
       last_value = val;
-      last_index = i;      
   }
   fieldNameElement.innerHTML = `${vibration_buffer}`;
 
