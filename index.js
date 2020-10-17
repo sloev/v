@@ -59,7 +59,7 @@ function processMessages(messages) {
 
   setTimeout(stopVibration, (buffer.length * refreshMs) + 1000);
 
-  window.navigator.vibrate(vibration_buffer);
+  navigator.vibrate(vibration_buffer);
 
 
 }
