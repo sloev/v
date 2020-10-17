@@ -13,7 +13,7 @@ let acl = new Accelerometer({ frequency: 30 });
 acl.addEventListener("reading", () => {
   var fieldNameElement = document.getElementById("losdivos");
 
-  let summed = (acl.x + acl.y + acl.z) / 3.0 + 1;
+  let summed = ((acl.x + acl.y + acl.z) / 3.0);
 
   buffer.push(summed);
 
