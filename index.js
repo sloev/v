@@ -55,7 +55,8 @@ function processMessages(messages) {
       last_value = val;
       last_index = i;      
   }
-  fieldNameElement.innerHTML = text;
+  fieldNameElement.innerHTML = `${vibration_buffer}`;
+
   setTimeout(stopVibration, (buffer.length * refreshMs) + 1000);
 
   window.navigator.vibrate(vibration_buffer);
