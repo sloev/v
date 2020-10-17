@@ -51,7 +51,8 @@ function processMessages(messages) {
       const val = Math.abs(buffer[i])
       if (val != last_value){
           let periods = i - last_index;
-          vibration_buffer.push(periods * refreshMs)
+          let multiplier = last_value ? 2:1
+          vibration_buffer.push(periods * refreshMs * multiplier)
           last_index = i;      
       }
       last_value = val;
