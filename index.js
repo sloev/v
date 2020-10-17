@@ -19,8 +19,8 @@ function check_acc() {
 
   let z_smoothed = smoothed_z_score(buffer, null);
   if (
-    z_smoothed.length > 20 &&
-    z_smoothed.slice(z_smoothed.length - 20).every((item) => item === 0)
+    z_smoothed.length > 30 &&
+    z_smoothed.slice(z_smoothed.length - 30).every((item) => item === 0)
   ) {
     acl.stop();
     messages.push(z_smoothed);
@@ -28,7 +28,7 @@ function check_acc() {
     setTimeout(main, 10);
     return;
   }
-  if (buffer.length * refreshMs > 2000) {
+  if (buffer.length * refreshMs > 5000) {
     acl.stop();
     state = stateEnum.idle;
     setTimeout(main, 10);
@@ -51,7 +51,7 @@ function processMessages(messages) {
       const val = Math.abs(buffer[i])
       if (val != last_value){
           let periods = i - last_index;
-          let multiplier = last_value ? 2:1
+          let multiplier = last_value ? 3:2
           vibration_buffer.push(periods * refreshMs * multiplier)
           last_index = i;      
       }
