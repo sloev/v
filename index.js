@@ -19,8 +19,8 @@ function check_acc() {
 
   let z_smoothed = smoothed_z_score(buffer, null);
   if (
-    z_smoothed.length > 15 &&
-    z_smoothed.slice(z_smoothed.length - 15).every((item) => item === 0)
+    z_smoothed.length > 25 &&
+    z_smoothed.slice(z_smoothed.length - 25).every((item) => item === 0)
   ) {
     acl.stop();
     messages.push(z_smoothed);
