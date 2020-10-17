@@ -15,7 +15,7 @@ acl.addEventListener("reading", () => {
     let summed = (acl.x + acl.y + acl.z) /3.0 + 1
     buffer.push(summed)
 
-  let z_smoothed = smoothed_z_score(buffer)
+  let z_smoothed = smoothed_z_score(buffer, null)
   var fieldNameElement = document.getElementById("losdivos");
   if (buffer.length>200){
       acl.stop()
@@ -34,16 +34,25 @@ function processMessages(messages) {
 }
 
 function main() {
+    var fieldNameElement = document.getElementById("losdivos");
+
     if (state == stateEnum.idle){
         if (messages.length>0) {
+            fieldNameElement.innerHTML = `playing`;
+
             state = stateEnum.playing;
             processMessages(messages)
             messages = []
         } else {
+            fieldNameElement.innerHTML = `recording`;
+
             state = stateEnum.recording;
             acl.start();
         }
+
     }
+    fieldNameElement.innerHTML = `idling`;
+
 }
 
 setTimeout(main, 10);
