@@ -38,6 +38,8 @@ acl.addEventListener("reading", () => {
   }
 });
 
+acl.stop()
+
 function processMessages(messages) {
   var fieldNameElement = document.getElementById("losdivos");
 
